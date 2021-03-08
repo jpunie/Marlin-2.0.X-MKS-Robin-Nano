@@ -60,7 +60,7 @@
 
 // Core XY
 //#define SAPPHIRE_PRO
-//#define SAPPHIRE_PLUS
+#define SAPPHIRE_PLUS
 //#define SAPPHIRE_PLUS_DUAL_Z //==> Read text since additional config is mandatory
 /****************************************************************************
 Attention: On newer Sapphire Plus models (Probably manufactured after April 2020)
@@ -78,7 +78,7 @@ non-belt-synced drives. In this case, a additional configuration has to be done
 //===========================================================================
 //============================= Hotend-Preset================================
 //===========================================================================
-//#define E3D_HEMERA //Only for Sapphire PLUS yet.
+#define E3D_HEMERA //Only for Sapphire PLUS yet.
 
 //Modifies Thermistor Types, esteps, homing sequence (Y before X)
 // and min X-position (+8mm)
@@ -86,7 +86,7 @@ non-belt-synced drives. In this case, a additional configuration has to be done
 //Used Mount --> (https://www.thingiverse.com/thing:4435761)
 #if ENABLED(E3D_HEMERA)
   #define INVERT_E0
-  #define CUSTOM_TEMP_SENSOR_0 5
+//  #define CUSTOM_TEMP_SENSOR_0 5
   #define STEPS_E0    409
   #define HOME_Y_BEFORE_X //Avoiding colision with endstops
 #endif
@@ -168,7 +168,7 @@ non-belt-synced drives. In this case, a additional configuration has to be done
 // CoolStep. Currently supported for TMC2130, TMC2209, TMC5130 and TMC5160 only.
 // This mode allows for cooler steppers and energy savings.
 // the driver will switch to coolStep when stepper speed is over COOLSTEP_THRESHOLD mm/s.
-// Settings for CoolStep in CONFIGURATION_ADV.h on Line 2499 
+// Settings for CoolStep in CONFIGURATION_ADV.h on Line 2499
 //#define COOLSTEP
 
 // Custom Axis Steps Per MM
@@ -804,9 +804,14 @@ non-belt-synced drives. In this case, a additional configuration has to be done
     #define DEFAULT_Kd 56.55
   #elif ENABLED(E3D_HEMERA) && NONE(CUSTOM_HOTEND_PID) && ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS)
     //Hemera on Sapphire Plus (tested) or Pro (not tested yet, but should be the same)
-    #define DEFAULT_Kp 14.67
-    #define DEFAULT_Ki 1.62
-    #define DEFAULT_Kd 33.22
+    // #define DEFAULT_Kp 14.67
+    // #define DEFAULT_Ki 1.62
+    // #define DEFAULT_Kd 33.22
+
+    // With stock heater and temp sensor
+    #define DEFAULT_Kp 16.44
+    #define DEFAULT_Ki 1.55
+    #define DEFAULT_Kd 43.49
 
   #elif ENABLED(BLUER) && NONE(CUSTOM_HOTEND_PID)
     //Bluer
@@ -1091,7 +1096,9 @@ non-belt-synced drives. In this case, a additional configuration has to be done
     //Sapphire Plus
     #define X_DRIVER_TYPE  TMC2208_STANDALONE
     #define Y_DRIVER_TYPE  TMC2208_STANDALONE
-    #define Z_DRIVER_TYPE  A4988
+    #define Z_DRIVER_TYPE  TMC2208_STANDALONE
+    // My config with TMC2208 parallel for Z
+    #define INVERT_Z
     //#define Z2_DRIVER_TYPE A4988
     #define E0_DRIVER_TYPE TMC2208_STANDALONE
     //#define E1_DRIVER_TYPE A4988
@@ -1881,15 +1888,15 @@ non-belt-synced drives. In this case, a additional configuration has to be done
       #define Y_MAX_POS Y_BED_SIZE_CUSTOM
       #define Z_MAX_POS Z_BED_SIZE_CUSTOM
     #elif ENABLED(E3D_HEMERA)
-      #define X_BED_SIZE 282
-      #define Y_BED_SIZE 296
+      #define X_BED_SIZE 290
+      #define Y_BED_SIZE 290
 
       // Travel limits (mm) after homing, corresponding to endstop positions.
-      #define X_MIN_POS -8 //mm to avoid colision with Endtopps / Z-Drive
+      #define X_MIN_POS 0 //mm to avoid colision with Endtopps / Z-Drive
       #define Y_MIN_POS 0
       #define Z_MIN_POS 0
-      #define X_MAX_POS 288
-      #define Y_MAX_POS 296
+      #define X_MAX_POS 290
+      #define Y_MAX_POS 290
       #define Z_MAX_POS 327 //mm | Hemera is positioned a little bit lower.
 
     #else
@@ -2248,7 +2255,7 @@ non-belt-synced drives. In this case, a additional configuration has to be done
 
 // Homing speeds (mm/m)
 #define HOMING_FEEDRATE_XY (50*60)
-#define HOMING_FEEDRATE_Z  (40*60)
+#define HOMING_FEEDRATE_Z  (20*60)
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
